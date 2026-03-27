@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+    <h1>Product Store</h1>
+    <p>Simple Multi-Product Order System</p>
+</header>
+
+<!-- ================= PRODUCTS ================= -->
+
+<!-- Water Bottle -->
+<section class="product">
+    <img src="water-bottle.jpg" alt="Smart Water Bottle">
+    <div class="details">
+        <h2>Smart Water Bottle</h2>
+        <p>Tracks daily water intake.</p>
+        <p class="price">₹1,999</p>
+
+        <button class="buy-btn"
+                data-product="Smart Water Bottle"
+                data-price="1999">
+            Buy Now
+        </button>
+    </div>
+</section>
+
+<!-- Perfume -->
+<section class="product">
+    <img src="perfume.jpg" alt="Perfume">
+    <div class="details">
+        <h2>Perfume</h2>
+        <p>Long-lasting fragrance.</p>
+        <p class="price">₹1,000</p>
+
+        <button class="buy-btn"
+                data-product="Perfume"
+                data-price="1000">
+            Buy Now
+        </button>
+    </div>
+</section>
+
+<!-- Car -->
+<section class="product">
+    <img src="car.jpg" alt="Car">
+    <div class="details">
+        <h2>Car</h2>
+        <p>Comfortable and powerful.</p>
+        <p class="price">₹1,00,00,000</p>
+
+        <!-- ✅ FIXED: numeric price only -->
+        <button class="buy-btn"
+                data-product="Car"
+                data-price="10000000">
+            Buy Now
+        </button>
+    </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+    <p>📧 support@store.com | 📞 +91 9876543210</p>
+    <p>© 2026 Product Store</p>
+</footer>
+
+<!-- ================= POPUP FORM ================= -->
+
+<div id="popup" class="popup-overlay">
+    <div class="popup-box">
+        <h2>Order Details</h2>
+
+        <form onsubmit="submitOrder(event)">
+            <input type="text" placeholder="Full Name" required>
+            <input type="text" placeholder="Address" required>
+            <input type="text" placeholder="Pin Code" required>
+            <input type="tel" placeholder="Phone Number" required>
+
+            <button type="submit">Place Order</button>
+            <button type="button" class="cancel" onclick="closeForm()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+let selectedProduct = "";
+let selectedPrice = "";
+
+/* Capture Buy button clicks (scales to unlimited products) */
+document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("buy-btn")) {
+        selectedProduct = e.target.dataset.product;
+        selectedPrice = e.target.dataset.price;
+        openForm();
+    }
+});
+
+function openForm() {
+    document.getElementById("popup").style.display = "flex";
+}
+
+function closeForm() {
+    document.getElementById("popup").style.display = "none";
+}
+
+function submitOrder(event) {
+    event.preventDefault();
+
+    const data = {
+        name: document.querySelector('input[placeholder="Full Name"]').value,
+        address: document.querySelector('input[placeholder="Address"]').value,
+        pincode: document.querySelector('input[placeholder="Pin Code"]').value,
+        phone: document.querySelector('input[placeholder="Phone Number"]').value,
+        product: selectedProduct,
+        price: "₹" + Number(selectedPrice).toLocaleString("en-IN")
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbxD5hclDoHhQWtQTr0kxsaK7ozOeQ5nSt7c7m8BADvhh-ALaP2IYof9eyuDmyRkmTc/exec", {
+        
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    alert("✅ Order placed for " + selectedProduct);
+    closeForm();
+}
+</script>
+
+</body>
+</html>
